@@ -1,6 +1,7 @@
 <script setup>
-import { onMounted, reactive } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import { useCategoriaStore } from '@/stores/categoria'
+import axios from 'axios'
 
 const categoriaStore = useCategoriaStore()
 const categoria = reactive({
@@ -8,7 +9,18 @@ const categoria = reactive({
   id: null,
 })
 
+const token = ref('')
+
 onMounted(async () => {
+  token.value = localStorage.getItem('psg_auth_token')
+  const response = await axios.get('https://livraria-marrcandre-2024.onrender.com/api/usuarios/me/',
+  {
+    headers: {
+      Authorization : `Bearer ${token.value}`
+    },
+  },
+  )
+  user.value = response.data
   try {
     await categoriaStore.buscarCategorias()
   } catch (error) {

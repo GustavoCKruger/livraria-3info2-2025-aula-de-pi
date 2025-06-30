@@ -17,7 +17,11 @@ class CategoriaService {
     try {
       await axios.patch(
         `https://livraria-marrcandre-2024.onrender.com/api/categorias/${categoria.id}/`,
-        categoria,
+        categoria, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('psg_auth_token')}`
+          },
+        }
       )
       return Promise.resolve()
     } catch (error) {
